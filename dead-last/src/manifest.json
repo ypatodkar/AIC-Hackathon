@@ -3,6 +3,10 @@
     "name": "Dead Last",
     "version": "1.0.0",
     "manifestVersion": 2,
+    "requiredPermissions": [
+    "document:addImage"
+        ],
+
     "requirements": {
         "apps": [
             {
