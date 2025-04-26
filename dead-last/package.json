@@ -15,6 +15,8 @@
         "panel"
     ],
     "dependencies": {
+        "@google/genai": "^0.10.0",
+        "@google/generative-ai": "^0.24.0",
         "@swc-react/button": "1.0.3",
         "@swc-react/theme": "1.0.3",
         "react": "18.2.0",
