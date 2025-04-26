@@ -10,31 +10,33 @@ import { Theme } from "@swc-react/theme";
 import React from "react";
 import "./App.css";
 
+
 const App = ({ addOnUISdk, sandboxProxy }) => {
-    function handleClick() {
-        sandboxProxy.createRectangle();
-    }
-    function handleClick2() {
-        sandboxProxy.createPage();
-    }
+  function handleClick() {
+    sandboxProxy.createRectangle();
+  }
+  function handleClick2() {
+    sandboxProxy.createPage();
+  }
 
-    return (
-        // Please note that the below "<Theme>" component does not react to theme changes in Express.
-        // You may use "addOnUISdk.app.ui.theme" to get the current theme and react accordingly.
-        <Theme system="express" scale="medium" color="light">
-            <div className="container">
-                <Button size="m" onClick={handleClick}>
-                    Create Rectangle
-                </Button>
-            </div>
 
-            <div className="container">
-                <Button size="m" onClick={handleClick2}>
-                    Create Page
-                </Button>
-            </div>
-        </Theme>
-    );
+  return (
+    // Please note that the below "<Theme>" component does not react to theme changes in Express.
+    // You may use "addOnUISdk.app.ui.theme" to get the current theme and react accordingly.
+    <Theme system="express" scale="medium" color="light">
+      <div className="container">
+        <Button size="m" onClick={handleClick}>
+          Create Rectangle
+        </Button>
+      </div>
+
+      <div className="container">
+        <Button size="m" onClick={handleClick2}>
+          Create Page
+        </Button>
+      </div>
+    </Theme>
+  );
 };
 
 export default App;

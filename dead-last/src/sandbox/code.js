@@ -13,6 +13,7 @@ function start() {
     // x.sand.createRectangle:() => {
 
     // }
+
     const sandboxApi = {
         createRectangle: () => {
             const rectangle = editor.createRectangle();
