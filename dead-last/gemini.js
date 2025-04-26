@@ -6,7 +6,9 @@ async function main() {
   const ai = new GoogleGenAI({ apiKey: "AIzaSyBye4qOZDR7Ma5CwANfcvHDCR9mXevqzGE" });
 
   const contents =
-    "Imagine me being happy";
+    "image of a pig " +
+    "with wings and a top hat flying over a happy " +
+    "futuristic scifi city with lots of greenery? [pixel-art][make it ppt background]";
 
   // Set responseModalities to include "Image" so the model can generate  an image
   const response = await ai.models.generateContent({

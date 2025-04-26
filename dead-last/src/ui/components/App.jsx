@@ -14,6 +14,9 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
     function handleClick() {
         sandboxProxy.createRectangle();
     }
+    function handleClick2() {
+        sandboxProxy.createPage();
+    }
 
     return (
         // Please note that the below "<Theme>" component does not react to theme changes in Express.
@@ -22,6 +25,12 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
             <div className="container">
                 <Button size="m" onClick={handleClick}>
                     Create Rectangle
+                </Button>
+            </div>
+
+            <div className="container">
+                <Button size="m" onClick={handleClick2}>
+                    Create Page
                 </Button>
             </div>
         </Theme>
