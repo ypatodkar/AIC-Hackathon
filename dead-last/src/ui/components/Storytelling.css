@@ -10,6 +10,7 @@
     font-family: 'Inter', sans-serif;
     box-sizing: border-box; /* VERY important for padding */
     margin: 15px;
+    padding: 15px;
   }
   
   .storytelling-title {
