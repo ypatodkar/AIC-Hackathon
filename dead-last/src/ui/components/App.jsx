@@ -26,26 +26,29 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
   
     // When a metaphor is picked, generate 5 slides via Gemini
     const handleSelectMetaphor = async (metaphor) => {
-      setCurrentPage("loading");
-      const deck = await getSlideDeck(metaphor.title);
-  
-      if (deck.length === 5) {
-        setSlides(deck);
-        setCurrentPage("slides");
-      } else {
-        setCurrentPage("error");
-      }
-    };
-
+        setCurrentPage("loading");
+        const rawDeck = await getSlideDeck(metaphor.title);
+      
+        if (rawDeck.length === 5) {
+          const deck = rawDeck.map(({ title, text }) => ({
+            title,
+            text,
+            description: text,    // ← populate description here
+          }));
+      
+          setSlides(deck);
+          setCurrentPage("slides");
+        } else {
+          setCurrentPage("error");
+        }
+      };
+    
   function handleAddAll(){
-    sandboxProxy.addMetaphorPages();
-  }
+      sandboxProxy.addMetaphorPages(slides);
+}
 
-  function handleOne(){
-      //Only for testing:
-  const title = "The Dance of the Bees: HCI in Nature";
-  const description = "loren ipsum";
-    sandboxProxy.insertMetaphor(title,description);
+function handleOne(m) {
+    sandboxProxy.insertMetaphor(m.title, m.description);
   }
 
   
@@ -73,17 +76,17 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
             }}
           />
 
-          <div className="container">
+          {/* <div className="container">
             <Button size="m" onClick={handleAddAll}>
               Add All Pages
             </Button>
-          </div>
+          </div> */}
 
-          <div className="container">
-            <Button size="m" onClick={handleOne}>
+          {/* <div className="container">
+            <Button size="m" onClick={handleOne(m)}>
               Add metaphor
             </Button>
-          </div>
+          </div> */}
 
           {/* <div className="container">
             <Button size="m" onClick={() => setCurrentPage("metaphorSelector")}>
@@ -123,15 +126,10 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
       {currentPage === "slides" && (
         <SlideSelection
           slides={slides}
-          onAddAll={() => {
-            slides.forEach((s) => {
-              sandboxProxy.createRectangle();
-              // Optionally add text:
-              // sandboxProxy.createText({ text: `${s.title}\n\n${s.text}` });
-            });
-          }}
+          onAddAll={handleAddAll}
           onStartOver={() => setCurrentPage("buttons")}
-        />
+          onAddOne={handleOne} 
+          />
       )}
     </Theme>
   );
