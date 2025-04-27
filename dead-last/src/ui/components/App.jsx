@@ -58,7 +58,7 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
             onGenerate={handleGenerate} // ← then replace with metaphors
           />
 
-          <div className="app-container">
+          <div className="app-container"  style={{ margin: "15px" }}>
             <AddImageButton />
           </div>
         </>
