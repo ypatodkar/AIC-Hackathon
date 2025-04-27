@@ -126,7 +126,7 @@ export default function AddImagePanel() {
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         <textarea
           rows={3}
-          placeholder="Enter an image prompt"
+          placeholder="Use 'Inspire Me' for prompt xuggestions"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           style={textareaStyle}
