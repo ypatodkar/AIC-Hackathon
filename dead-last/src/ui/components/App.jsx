@@ -41,18 +41,8 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
       {currentPage === "buttons" && (
         <>
           <div className="container">
-            <Button size="m" onClick={handleClick}>
-              Create Rectangle
-            </Button>
-          </div>
-          <div className="container">
             <Button size="m" onClick={handleClick2}>
               Create Page
-            </Button>
-          </div>
-          <div className="container">
-            <Button size="m" onClick={() => setCurrentPage("metaphorSelector")}>
-              Next Page
             </Button>
           </div>
 
