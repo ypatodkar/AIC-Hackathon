@@ -141,7 +141,7 @@ export default function AddImagePanel() {
             (e.currentTarget.style.backgroundColor = "#F3F4F6")
           }
         >
-          <div >Inspire me</div>
+          <div>Inspire me</div>
         </button>
       </div>
 
@@ -159,7 +159,12 @@ export default function AddImagePanel() {
       </div>
 
       {/* generate */}
-      <Button size="l" onClick={handleGenerate} disabled={loading}  style={{ borderRadius: 8 }}>
+      <Button
+        size="l"
+        onClick={handleGenerate}
+        disabled={loading}
+        style={{ borderRadius: 8 }}
+      >
         {loading ? "Generating…" : "Generate & Insert Image"}
       </Button>
     </div>
