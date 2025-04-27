@@ -1,6 +1,8 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI("AIzaSyBye4qOZDR7Ma5CwANfcvHDCR9mXevqzGE");
+const genAI = new GoogleGenerativeAI(
+  "AIzaSyBye4qOZDR7Ma5CwANfcvHDCR9mXevqzGE" // must match your .env key
+);
 
 export async function getMetaphors(subject) {
   const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
