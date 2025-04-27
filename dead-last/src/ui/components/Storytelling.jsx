@@ -18,9 +18,9 @@ const Storytelling = ({ onGenerate }) => {
 
   return (
     <div className="storytelling-wrapper">
-      <h2 className="storytelling-title">Storytelling</h2>
+      <h2 className="storytelling-title">Presentation</h2>
       <p className="storytelling-description">
-        Create story metaphors to enhance your presentation subject
+        Create story style to enhance your presentation subject
       </p>
 
       <label htmlFor="subject" className="storytelling-label">
@@ -29,7 +29,7 @@ const Storytelling = ({ onGenerate }) => {
       <textarea
         id="subject"
         className="storytelling-textarea"
-        placeholder="E.g. Data security"
+        placeholder="E.g. Adobe "
         maxLength={300}
         value={subject}
         onChange={(e) => setSubject(e.target.value)}
@@ -38,7 +38,7 @@ const Storytelling = ({ onGenerate }) => {
       <div className="storytelling-count">{subject.length}/300</div>
 
       <button className="storytelling-button" onClick={handleCreateMetaphors}>
-        Create metaphors
+        Create Presentation
       </button>
     </div>
   );
