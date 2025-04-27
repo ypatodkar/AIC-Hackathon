@@ -1,58 +1,43 @@
-// To support: system="express" scale="medium" color="light"
-// import these spectrum web components modules:
+// src/App.jsx
+import React, { useState } from "react";
 import "@spectrum-web-components/theme/express/scale-medium.js";
 import "@spectrum-web-components/theme/express/theme-light.js";
-
-// To learn more about using "swc-react" visit:
-// https://opensource.adobe.com/spectrum-web-components/using-swc-react/
 import { Button } from "@swc-react/button";
-import React, { useState } from "react";
-
 import { Theme } from "@swc-react/theme";
-import MetaphorSelector from "../components/MetaphorSelector";
+
 import Storytelling from "../components/Storytelling";
+import MetaphorSelector from "../components/MetaphorSelector";
+import SlideSelection from "../components/Slideselection";
+import { getSlideDeck } from "./geminislidecreation";
 
 import "./App.css";
 
-// const metaphors = [
-//   {
-//     id: 1,
-//     title: "The Dance of the Bees: HCI in Nature",
-//     description:
-//       "Just as bees communicate through intricate dances to share vital information, Human-Computer Interaction (HCI) connects users with technology. By understanding user needs and interactions, we can create a harmonious digital ecosystem. Explore how the elegance of nature inspires efficient design and fosters innovation in technology.",
-//   },
-//   {
-//     id: 2,
-//     title: "Roots That Connect: HCI Inspired by Trees",
-//     description:
-//       "Look to the roots of trees, intertwined underground, for inspiration in HCI. Each root represents a different user's need, and together they create a strong foundation for interaction. Just as trees adapt to their environment, we should design adaptive interfaces that meet diverse user requirements, promoting growth and understanding.",
-//   },
-//   {
-//     id: 3,
-//     title: "The Sprinting Cheetah: HCI for Speed and Efficiency",
-//     description:
-//       "The cheetah, the fastest land animal, teaches us about speed and efficiency in HCI. Just as the cheetah optimizes its movements for maximum performance, interface design must prioritize user efficiency without sacrificing experience. Let's explore how fast-paced sports can inspire quicker, user-friendly technology interactions.",
-//   },
-// ];
-
 const App = ({ addOnUISdk, sandboxProxy }) => {
-  const [currentPage, setCurrentPage] = useState("buttons");
-  const [metaphors, setMetaphors] = useState([]);
-  const handleSelectMetaphor = (metaphor) => {
-    console.log("Selected metaphor:", metaphor); //link to function component slide
-    // later: generate slides based on metaphor selection
+  // Routing & data state
+  const [currentPage, setCurrentPage] = useState("buttons"); // buttons | metaphorSelector | loading | error | slides
+  const [metaphors, setMetaphors] = useState([]); // array from Storytelling
+  const [slides, setSlides] = useState([]); // 5-slide deck from Gemini
+
+  // Canvas actions
+  const handleClick = () => sandboxProxy.createRectangle();
+  const handleClick2 = () => sandboxProxy.createPage();
+
+  // When a metaphor is picked, generate 5 slides via Gemini
+  const handleSelectMetaphor = async (metaphor) => {
+    setCurrentPage("loading");
+    const deck = await getSlideDeck(metaphor.title);
+
+    if (deck.length === 5) {
+      setSlides(deck);
+      setCurrentPage("slides");
+    } else {
+      setCurrentPage("error");
+    }
   };
-  function handleClick() {
-    sandboxProxy.createRectangle();
-  }
-  function handleClick2() {
-    sandboxProxy.createPage();
-  }
 
   return (
-    // Please note that the below "<Theme>" component does not react to theme changes in Express.
-    // You may use "addOnUISdk.app.ui.theme" to get the current theme and react accordingly.
     <Theme system="express" scale="medium" color="light">
+      {/* ======== BUTTONS SCREEN ======== */}
       {currentPage === "buttons" && (
         <>
           <div className="container">
@@ -60,33 +45,59 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
               Create Rectangle
             </Button>
           </div>
-
           <div className="container">
             <Button size="m" onClick={handleClick2}>
               Create Page
             </Button>
           </div>
-
           <div className="container">
             <Button size="m" onClick={() => setCurrentPage("metaphorSelector")}>
               Next Page
             </Button>
           </div>
-          <div className="app-container">
-            <Storytelling
-              onGenerate={(newList) => {
-                setMetaphors(newList); // store Gemini’s list
-                setCurrentPage("metaphorSelector"); // then go to selector
-              }}
-            />
-          </div>
+
+          <Storytelling
+            onGenerate={(newList) => {
+              setMetaphors(newList);
+              setCurrentPage("metaphorSelector");
+            }}
+          />
         </>
       )}
 
+      {/* ======== METAPHOR SELECTOR ======== */}
       {currentPage === "metaphorSelector" && (
         <MetaphorSelector
           metaphors={metaphors}
           onSelect={handleSelectMetaphor}
+        />
+      )}
+
+      {/* ======== LOADING & ERROR STATES ======== */}
+      {currentPage === "loading" && <p>Generating slides…</p>}
+      {currentPage === "error" && (
+        <>
+          <p style={{ color: "red" }}>
+            Error generating slides. Please try again.
+          </p>
+          <Button size="m" onClick={() => setCurrentPage("metaphorSelector")}>
+            Back to Metaphors
+          </Button>
+        </>
+      )}
+
+      {/* ======== SLIDE SELECTION (RESULTS) ======== */}
+      {currentPage === "slides" && (
+        <SlideSelection
+          slides={slides}
+          onAddAll={() => {
+            slides.forEach((s) => {
+              sandboxProxy.createRectangle();
+              // Optionally add text:
+              // sandboxProxy.createText({ text: `${s.title}\n\n${s.text}` });
+            });
+          }}
+          onStartOver={() => setCurrentPage("buttons")}
         />
       )}
     </Theme>
