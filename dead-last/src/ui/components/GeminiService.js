@@ -1,36 +1,57 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Initialize the Gemini API
-const genAI = new GoogleGenerativeAI("AIzaSyBye4qOZDR7Ma5CwANfcvHDCR9mXevqzGE"); // ⬅️ Replace with your API key
+const genAI = new GoogleGenerativeAI("AIzaSyBye4qOZDR7Ma5CwANfcvHDCR9mXevqzGE");
 
 export async function getMetaphors(subject) {
   const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-
   const prompt = `
-Generate 3 metaphors for the following presentation subject: "${subject}".
-Each metaphor should have:
+Generate exactly 3 creative metaphors for the presentation subject: "${subject}".
+Each metaphor must have:
+- An id (1, 2, 3)
 - A creative title
-- A short description (3-4 lines)
-Format your response exactly as a JavaScript array of objects like:
+- A short description (around 3-5 lines)
+
+Strictly format your response as a JavaScript array of objects like:
 [
-  { id: 1, title: "Title 1", description: "Description 1" },
-  { id: 2, title: "Title 2", description: "Description 2" },
-  { id: 3, title: "Title 3", description: "Description 3" }
+  { id: 1, title: "Example Title 1", description: "Example description 1" },
+  { id: 2, title: "Example Title 2", description: "Example description 2" },
+  { id: 3, title: "Example Title 3", description: "Example description 3" }
 ]
+Do not add any explanation or commentary outside the array.
 `;
 
+  // 1) generate
   const result = await model.generateContent(prompt);
-  const response = await result.response;
-  const text = response.text();
 
-  // Sometimes Gemini might give extra ``` marks, so we clean them
-  const cleanedText = text.replace(/```(javascript)?/g, "").trim();
+  // 2) grab the raw text
+  const raw = await result.response.text();
+  console.log("🔍 Raw Gemini response:", raw);
 
+  // 3) strip out any code fences (``` or ```javascript)
+  let body = raw
+    .replace(/```(?:javascript)?/g, "")
+    .replace(/```/g, "")
+    .trim();
+
+  // 4) ensure it’s wrapped in [ ... ]
+  if (!body.startsWith("[")) {
+    body = `[${body}]`;
+  }
+
+  // 5) quote unquoted keys:  { id: → { "id":
+  body = body.replace(/([{,]\s*)([a-zA-Z0-9_]+)\s*:/g, '$1"$2":');
+
+  // 6) remove any trailing commas before } or ]
+  body = body.replace(/,(\s*[}\]])/g, "$1");
+
+  console.log("🛠️  Cleaned JSON string:", body);
+
+  // 7) parse
   try {
-    const metaphors = JSON.parse(cleanedText);
+    const metaphors = JSON.parse(body);
     return metaphors;
-  } catch (error) {
-    console.error("Error parsing Gemini response:", error);
+  } catch (err) {
+    console.error("❌ Error parsing JSON:", err);
     return [];
   }
 }
