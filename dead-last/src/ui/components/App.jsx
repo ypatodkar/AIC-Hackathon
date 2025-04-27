@@ -9,26 +9,38 @@ import { Button } from "@swc-react/button";
 import React, { useState } from "react";
 import { Theme } from "@swc-react/theme";
 import MetaphorSelector from "../components/MetaphorSelector";
-import Storytelling from "../components/Storytelling";
 import AddImageButton from "./AddImageButton";
+
+import Storytelling from "../components/Storytelling";
+import SlideSelection from "../components/Slideselection";
+import { getSlideDeck } from "./geminislidecreation";
 
 import "./App.css";
 
 
 
 const App = ({ addOnUISdk, sandboxProxy }) => {
-  const [currentPage, setCurrentPage] = useState("buttons");
+    // Routing & data state
+    const [currentPage, setCurrentPage] = useState("buttons"); // buttons | metaphorSelector | loading | error | slides
+    const [metaphors, setMetaphors] = useState([]); // array from Storytelling
+    const [slides, setSlides] = useState([]); // 5-slide deck from Gemini
   
-  const handleSelectMetaphor = (metaphor) => {
-    console.log("Selected metaphor:", metaphor);
-  };
-
-
-
-//   function handleClick2() {
-//     sandboxProxy.createPage();
-//   }
-
+    // Canvas actions
+    const handleClick = () => sandboxProxy.createRectangle();
+    const handleClick2 = () => sandboxProxy.createPage();
+  
+    // When a metaphor is picked, generate 5 slides via Gemini
+    const handleSelectMetaphor = async (metaphor) => {
+      setCurrentPage("loading");
+      const deck = await getSlideDeck(metaphor.title);
+  
+      if (deck.length === 5) {
+        setSlides(deck);
+        setCurrentPage("slides");
+      } else {
+        setCurrentPage("error");
+      }
+    };
 
   function handleAddAll(){
     sandboxProxy.addMetaphorPages();
@@ -41,6 +53,7 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
     sandboxProxy.insertMetaphor(title,description);
   }
 
+  
   return (
     <Theme system="express" scale="medium" color="light">
       {currentPage === "buttons" && (
@@ -56,6 +69,12 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
               Create Page
             </Button>
           </div> */}
+          <Storytelling
+            onGenerate={(newList) => {
+              setMetaphors(newList);
+              setCurrentPage("metaphorSelector");
+            }}
+          />
 
           <div className="container">
             <Button size="m" onClick={handleAddAll}>
@@ -87,6 +106,35 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
           onSelect={handleSelectMetaphor}
         />
       )}
+      
+      {/* ======== LOADING & ERROR STATES ======== */}
+      {currentPage === "loading" && <p>Generating slides…</p>}
+      {currentPage === "error" && (
+        <>
+          <p style={{ color: "red" }}>
+            Error generating slides. Please try again.
+          </p>
+          <Button size="m" onClick={() => setCurrentPage("metaphorSelector")}>
+            Back to Metaphors
+          </Button>
+        </>
+      )}
+
+      {/* ======== SLIDE SELECTION (RESULTS) ======== */}
+      {currentPage === "slides" && (
+        <SlideSelection
+          slides={slides}
+          onAddAll={() => {
+            slides.forEach((s) => {
+              sandboxProxy.createRectangle();
+              // Optionally add text:
+              // sandboxProxy.createText({ text: `${s.title}\n\n${s.text}` });
+            });
+          }}
+          onStartOver={() => setCurrentPage("buttons")}
+        />
+      )}
+      
     </Theme>
   );
 };
