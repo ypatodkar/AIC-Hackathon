@@ -54,7 +54,7 @@ const MetaphorSelector = ({ metaphors, onSelect }) => {
               marginTop: "10px",
               backgroundColor: "#4B56D2",
               color: "#ffffff",
-              borderRadius: "20px",
+              borderRadius: "8px",
               width: "80px",
               fontSize: "12px",
               fontWeight: "bold",

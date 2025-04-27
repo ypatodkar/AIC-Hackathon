@@ -1,14 +1,15 @@
 .storytelling-wrapper {
     background: #ffffff;
     color: #000000;
-    padding: 24px;
+
     border-radius: 12px;
     width: 90%;        /* <-- THIS is important */
     max-width: 400px;   /* Max size */
-    margin: 24px auto;  /* Center and add space */
+
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     font-family: 'Inter', sans-serif;
     box-sizing: border-box; /* VERY important for padding */
+    margin: 15px;
   }
   
   .storytelling-title {

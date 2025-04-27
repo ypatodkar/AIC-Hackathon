@@ -73,7 +73,7 @@ export default function AddImagePanel() {
   const cardStyle = {
     background: "#fff",
     border: "1px solid #E5E7EB",
-    borderRadius: 12,
+    borderRadius: 8,
     boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
     padding: 20,
     maxWidth: 400,
@@ -109,10 +109,10 @@ export default function AddImagePanel() {
     fontSize: "16px",
     fontWeight: 600,
     borderRadius: 8,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: "rgb(243, 244, 246)",
     border: "1px solid #D1D5DB",
     boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-    height: 56,
+    height: 40,
     cursor: "pointer",
     transition: "background-color 0.2s ease",
   };
@@ -141,7 +141,7 @@ export default function AddImagePanel() {
             (e.currentTarget.style.backgroundColor = "#F3F4F6")
           }
         >
-          Inspire me
+          <div >Inspire me</div>
         </button>
       </div>
 
@@ -159,7 +159,7 @@ export default function AddImagePanel() {
       </div>
 
       {/* generate */}
-      <Button size="l" onClick={handleGenerate} disabled={loading}>
+      <Button size="l" onClick={handleGenerate} disabled={loading}  style={{ borderRadius: 8 }}>
         {loading ? "Generating…" : "Generate & Insert Image"}
       </Button>
     </div>
