@@ -13,8 +13,6 @@ import MetaphorSelector from "../components/MetaphorSelector";
 import Storytelling from "../components/Storytelling";
 
 import "./App.css";
-import Storytelling from './Storytelling';
-
 
 // const metaphors = [
 //   {
@@ -38,7 +36,6 @@ import Storytelling from './Storytelling';
 // ];
 
 const App = ({ addOnUISdk, sandboxProxy }) => {
-
   const [currentPage, setCurrentPage] = useState("buttons");
   const [metaphors, setMetaphors] = useState([]);
   const handleSelectMetaphor = (metaphor) => {
@@ -94,7 +91,6 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
       )}
     </Theme>
   );
-
 };
 
 export default App;
