@@ -1,0 +1,47 @@
+/* src/components/Loader.css */
+.loader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    background-color: #fff;        /* switched to white */
+    color: #000;                   /* dark text on light bg */
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .loader-bar {
+    width: 80%;
+    height: 10px;
+    background: #eee;              /* light gray track */
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  
+  .loader-progress {
+    height: 100%;
+    width: 30%;
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+    animation: loading 2s infinite;
+    border-radius: 5px;
+  }
+  
+  @keyframes loading {
+    0%   { transform: translateX(-100%); }
+    50%  { transform: translateX(0%); }
+    100% { transform: translateX(100%); }
+  }
+  
+  .loader-text {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px 0 5px;
+  }
+  
+  .loader-subtext {
+    font-size: 14px;
+    color: #555;
+  }
+  
