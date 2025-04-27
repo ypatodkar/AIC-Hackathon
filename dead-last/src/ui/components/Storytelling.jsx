@@ -32,7 +32,7 @@ const Storytelling = ({ onStart, onGenerate }) => {
       <textarea
         id="subject"
         className="storytelling-textarea"
-        placeholder="Eg: AI x Adobe "
+        placeholder="Eg: Adobe x AI "
         maxLength={300}
         value={subject}
         onChange={(e) => setSubject(e.target.value)}
