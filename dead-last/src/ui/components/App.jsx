@@ -6,9 +6,11 @@ import "@spectrum-web-components/theme/express/theme-light.js";
 // To learn more about using "swc-react" visit:
 // https://opensource.adobe.com/spectrum-web-components/using-swc-react/
 import { Button } from "@swc-react/button";
+import React, { useState } from "react";
 import { Theme } from "@swc-react/theme";
 import MetaphorSelector from "../components/MetaphorSelector";
-import React from "react";
+import Storytelling from "../components/Storytelling";
+
 import "./App.css";
 
 const metaphors = [
@@ -33,6 +35,7 @@ const metaphors = [
 ];
 
 const App = ({ addOnUISdk, sandboxProxy }) => {
+  const [currentPage, setCurrentPage] = useState("buttons");
   const handleSelectMetaphor = (metaphor) => {
     console.log("Selected metaphor:", metaphor); //link to function component slide
     // later: generate slides based on metaphor selection
@@ -48,24 +51,37 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
     // Please note that the below "<Theme>" component does not react to theme changes in Express.
     // You may use "addOnUISdk.app.ui.theme" to get the current theme and react accordingly.
     <Theme system="express" scale="medium" color="light">
-      <div className="container">
-        <Button size="m" onClick={handleClick}>
-          Create Rectangle
-        </Button>
-      </div>
+      {currentPage === "buttons" && (
+        <>
+          <div className="container">
+            <Button size="m" onClick={handleClick}>
+              Create Rectangle
+            </Button>
+          </div>
 
-      <div className="container">
-        <Button size="m" onClick={handleClick2}>
-          Create Page
-        </Button>
-      </div>
+          <div className="container">
+            <Button size="m" onClick={handleClick2}>
+              Create Page
+            </Button>
+          </div>
 
-      <div className="container">
-        <Button size="m" onClick={handleClick2}>
-          Next Page
-        </Button>
-      </div>
-      <MetaphorSelector metaphors={metaphors} onSelect={handleSelectMetaphor} />
+          <div className="container">
+            <Button size="m" onClick={() => setCurrentPage("metaphorSelector")}>
+              Next Page
+            </Button>
+          </div>
+          <div className="app-container">
+            <Storytelling />
+          </div>
+        </>
+      )}
+
+      {currentPage === "metaphorSelector" && (
+        <MetaphorSelector
+          metaphors={metaphors}
+          onSelect={handleSelectMetaphor}
+        />
+      )}
     </Theme>
   );
 };
