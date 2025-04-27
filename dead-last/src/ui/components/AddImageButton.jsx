@@ -56,6 +56,7 @@ export default function AddImageButton() {
       alert("Error generating image. See console for details.");
     } finally {
       setLoading(false);
+
     }
   };
 

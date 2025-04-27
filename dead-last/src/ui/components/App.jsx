@@ -1,23 +1,18 @@
-// To support: system="express" scale="medium" color="light"
-// import these spectrum web components modules:
+// src/App.jsx
+import React, { useState } from "react";
 import "@spectrum-web-components/theme/express/scale-medium.js";
 import "@spectrum-web-components/theme/express/theme-light.js";
-
-// To learn more about using "swc-react" visit:
-// https://opensource.adobe.com/spectrum-web-components/using-swc-react/
 import { Button } from "@swc-react/button";
-import React, { useState } from "react";
 import { Theme } from "@swc-react/theme";
 import MetaphorSelector from "../components/MetaphorSelector";
 import AddImageButton from "./AddImageButton";
 
 import Storytelling from "../components/Storytelling";
+
 import SlideSelection from "../components/Slideselection";
 import { getSlideDeck } from "./geminislidecreation";
 
 import "./App.css";
-
-
 
 const App = ({ addOnUISdk, sandboxProxy }) => {
     // Routing & data state
@@ -56,6 +51,7 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
   
   return (
     <Theme system="express" scale="medium" color="light">
+      {/* ======== BUTTONS SCREEN ======== */}
       {currentPage === "buttons" && (
         <>
           {/* <div className="container">
@@ -63,6 +59,7 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
               Create Rectangle
             </Button>
           </div>
+
 
           <div className="container">
             <Button size="m" onClick={handleClick2}>
@@ -97,16 +94,18 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
         <div className="app-container">
             <AddImageButton />
           </div>
+
         </>
       )}
 
+      {/* ======== METAPHOR SELECTOR ======== */}
       {currentPage === "metaphorSelector" && (
         <MetaphorSelector
           metaphors={metaphors}
           onSelect={handleSelectMetaphor}
         />
       )}
-      
+
       {/* ======== LOADING & ERROR STATES ======== */}
       {currentPage === "loading" && <p>Generating slides…</p>}
       {currentPage === "error" && (
@@ -134,7 +133,6 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
           onStartOver={() => setCurrentPage("buttons")}
         />
       )}
-      
     </Theme>
   );
 };

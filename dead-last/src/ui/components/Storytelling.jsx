@@ -2,13 +2,18 @@ import React, { useState } from "react";
 import "./Storytelling.css";
 import { getMetaphors } from "./GeminiService";
 
-const Storytelling = () => {
+// Now receives an onGenerate callback from App
+const Storytelling = ({ onGenerate }) => {
   const [subject, setSubject] = useState("");
 
   const handleCreateMetaphors = async () => {
     console.log("Creating metaphors for:", subject);
     const results = await getMetaphors(subject);
-    console.log(results);
+    console.log("Metaphors received:", results);
+    // Pass Gemini's output back up to App
+    if (onGenerate) {
+      onGenerate(results);
+    }
   };
 
   return (
