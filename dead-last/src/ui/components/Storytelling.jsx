@@ -1,107 +1,47 @@
-// src/components/Storytelling.jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import "./Storytelling.css";
+import { getMetaphors } from "./GeminiService";
 
-export default function Storytelling() {
-  const maxLength = 300;
-  const [subject, setSubject] = useState('');
+// Now receives an onGenerate callback from App
+const Storytelling = ({ onGenerate }) => {
+  const [subject, setSubject] = useState("");
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    if (value.length <= maxLength) {
-      setSubject(value);
+  const handleCreateMetaphors = async () => {
+    console.log("Creating metaphors for:", subject);
+    const results = await getMetaphors(subject);
+    console.log("Metaphors received:", results);
+    // Pass Gemini's output back up to App
+    if (onGenerate) {
+      onGenerate(results);
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // TODO: hook this up to your generation logic
-    console.log('Create metaphors for:', subject);
-  };
-
-  const styles = {
-    container: {
-    //   color: '#FFFFFF',
-        border: '1px solid',
-      padding: '24px',
-      borderRadius: '8px',
-      fontFamily: 'sans-serif',
-    },
-    title: {
-      fontSize: '20px',
-      fontWeight: 600,
-      marginBottom: '4px',
-    },
-    instruction: {
-      fontSize: '14px',
-    //   color: '#A1A1AA',
-      marginBottom: '16px',
-    },
-    label: {
-      fontSize: '12px',
-      fontWeight: 500,
-      marginBottom: '4px',
-      display: 'block',
-    },
-    textarea: {
-      width: '90%',
-      height: '100px',
-      padding: '8px',
-      borderRadius: '4px',
-      border: '1px solid',
-
-    //   color: '#E4E4E7',
-      fontSize: '14px',
-      resize: 'none',
-    },
-    charCount: {
-      textAlign: 'right',
-      fontSize: '12px',
-    //   color: '#71717A',
-      marginTop: '4px',
-    },
-    button: {
-      marginTop: '16px',
-      width: '100%',
-      padding: '12px',
-      background: '#8B5CF6',
-      border: 'none',
-      borderRadius: '4px',
-    //   color: '#FFFFFF',
-      fontSize: '16px',
-      fontWeight: 500,
-      cursor: subject.trim() ? 'pointer' : 'not-allowed',
-      opacity: subject.trim() ? 1 : 0.6,
-    },
-  };
-
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Presentation</h1>
-      <p style={styles.instruction}>
-        Tell us your story
+    <div className="storytelling-wrapper">
+      <h2 className="storytelling-title">Storytelling</h2>
+      <p className="storytelling-description">
+        Create story metaphors to enhance your presentation subject
       </p>
 
-      <form onSubmit={handleSubmit}>
+      <label htmlFor="subject" className="storytelling-label">
+        Presentation subject
+      </label>
+      <textarea
+        id="subject"
+        className="storytelling-textarea"
+        placeholder="E.g. Data security"
+        maxLength={300}
+        value={subject}
+        onChange={(e) => setSubject(e.target.value)}
+      />
 
-        <textarea
-          id="presentation-subject"
-          placeholder="Enter Prompt"
-          value={subject}
-          onChange={handleChange}
-          maxLength={maxLength}
-          style={styles.textarea}
-        />
-        <div style={styles.charCount}>
-          {subject.length}/{maxLength}
-        </div>
-        <button
-          type="submit"
-          style={styles.button}
-          disabled={!subject.trim()}
-        >
-          Create metaphors
-        </button>
-      </form>
+      <div className="storytelling-count">{subject.length}/300</div>
+
+      <button className="storytelling-button" onClick={handleCreateMetaphors}>
+        Create metaphors
+      </button>
     </div>
   );
-}
+};
+
+export default Storytelling;
