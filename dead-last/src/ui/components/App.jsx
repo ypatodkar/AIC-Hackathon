@@ -10,6 +10,7 @@ import React, { useState } from "react";
 import { Theme } from "@swc-react/theme";
 import MetaphorSelector from "../components/MetaphorSelector";
 import Storytelling from "../components/Storytelling";
+import AddImageButton from "./AddImageButton";
 
 import "./App.css";
 
@@ -73,8 +74,9 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
               Next Page
             </Button>
           </div> */}
-          <div className="app-container">
-            <Storytelling />
+
+        <div className="app-container">
+            <AddImageButton />
           </div>
         </>
       )}
