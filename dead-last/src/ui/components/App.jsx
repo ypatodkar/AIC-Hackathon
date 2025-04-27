@@ -7,11 +7,14 @@ import "@spectrum-web-components/theme/express/theme-light.js";
 // https://opensource.adobe.com/spectrum-web-components/using-swc-react/
 import { Button } from "@swc-react/button";
 import React, { useState } from "react";
+
 import { Theme } from "@swc-react/theme";
 import MetaphorSelector from "../components/MetaphorSelector";
 import Storytelling from "../components/Storytelling";
 
 import "./App.css";
+import Storytelling from './Storytelling';
+
 
 // const metaphors = [
 //   {
@@ -35,6 +38,7 @@ import "./App.css";
 // ];
 
 const App = ({ addOnUISdk, sandboxProxy }) => {
+
   const [currentPage, setCurrentPage] = useState("buttons");
   const [metaphors, setMetaphors] = useState([]);
   const handleSelectMetaphor = (metaphor) => {
@@ -90,6 +94,7 @@ const App = ({ addOnUISdk, sandboxProxy }) => {
       )}
     </Theme>
   );
+
 };
 
 export default App;
